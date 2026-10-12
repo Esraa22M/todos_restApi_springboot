@@ -39,7 +39,8 @@ public class User implements UserDetails {
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name ="user_authorities" , joinColumns = @JoinColumn(name = "user_id"))
     private List<Authority>authorities;
-    //private List<Todo>todos;
+    @OneToMany(mappedBy = "owner" , cascade = CascadeType.ALL , orphanRemoval = true)
+    private List<Todo>todos;
     public User(){
 
     }
