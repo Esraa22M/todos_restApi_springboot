@@ -36,13 +36,20 @@ public class User implements UserDetails {
     @Column(name = "updated_at")
     private Date updatedAt;
 
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name ="user_authorities" , joinColumns = @JoinColumn(name = "user_id"))
+    private List<Authority>authorities;
     //private List<Todo>todos;
     public User(){
 
     }
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of();
+        return authorities;
+    }
+
+    public void setAuthorities(List<Authority> authorities) {
+        this.authorities = authorities;
     }
 
     @Override
