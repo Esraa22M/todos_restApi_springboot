@@ -1,6 +1,8 @@
 package com.esraa.springboot.todos.entities;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.jspecify.annotations.Nullable;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -31,8 +33,9 @@ public class User implements UserDetails {
 
     //you cannot change the value of createdAt as it is the user creation date.
     @Column(updatable = false , name = "created_at")
+    @CreationTimestamp
     private Date createdAt;
-
+    @UpdateTimestamp
     @Column(name = "updated_at")
     private Date updatedAt;
 
