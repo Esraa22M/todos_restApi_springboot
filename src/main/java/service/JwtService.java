@@ -5,7 +5,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Map;
 
 public interface JwtService {
-    //extract username from token.
+    //extract subject from token which is email or username .
     String extractUsername(String token);
     //validate the token
     boolean isTokenValid(String token , UserDetails userDetails);
