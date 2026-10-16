@@ -1,7 +1,7 @@
-package service;
+package com.esraa.springboot.todos.service;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.io.Decoder;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
@@ -9,10 +9,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
-import java.security.Key;
-import java.util.Base64;
 import java.util.Date;
 import java.util.Map;
+import java.util.function.Function;
+
 @Service
 public class JwtServiceImpl implements  JwtService{
     @Value("${spring.jwt.secret}")
@@ -22,12 +22,31 @@ public class JwtServiceImpl implements  JwtService{
     private long JWT_EXPIRATION;
     @Override
     public String extractUsername(String token) {
-        return "";
+        return extractClaim(token , Claims::getSubject);
     }
+    private <T>T extractClaim(String token , Function<Claims , T>claimsResolver){
+        final Claims claims = extractAllClaims(token);
+        return claimsResolver.apply(claims);
+    }
+    private boolean isTokenExpired(String token){
 
+        return extractExpirationDate(token).before(new Date());
+    }
+    private Date extractExpirationDate(String token){
+        return extractClaim(token, Claims::getExpiration);
+    }
+    private Claims extractAllClaims(String token){
+        return Jwts.parser().
+                verifyWith(getSignningKey()).
+                build().
+                parseSignedClaims(token).
+                getPayload();
+
+    }
     @Override
     public boolean isTokenValid(String token, UserDetails userDetails) {
-        return false;
+        final String username = extractUsername(token);
+        return username.equals(userDetails.getUsername())&&!isTokenExpired(token);
     }
 
     @Override
