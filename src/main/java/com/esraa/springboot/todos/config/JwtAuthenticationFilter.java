@@ -29,6 +29,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         this.jwtService = jwtService;
         this.userDetailsService = userDetailsService;
     }
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) {
+        String path = request.getServletPath();
+        return path.startsWith("/api/auth") || path.equals("/error");
+    }
     // take the JWT OUT OF REQUEST
     @Override
     protected void doFilterInternal(@NotNull HttpServletRequest request,

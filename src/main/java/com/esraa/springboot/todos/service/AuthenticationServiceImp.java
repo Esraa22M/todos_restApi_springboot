@@ -23,7 +23,7 @@ public class AuthenticationServiceImp implements AuthenticationService{
     }
     @Transactional
     @Override
-    public void Register(RegisterRequest input) throws Exception {
+    public void register(RegisterRequest input) throws Exception {
         if(isEmailTaken(input.getEmail())){
             throw new Exception("Email is already taken");
         }

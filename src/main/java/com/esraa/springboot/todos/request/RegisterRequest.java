@@ -27,7 +27,8 @@ public class RegisterRequest {
         this.email = email;
         this.password = password;
     }
-
+    public RegisterRequest() {
+    }
     public String getFirstName() {
         return firstName;
     }
