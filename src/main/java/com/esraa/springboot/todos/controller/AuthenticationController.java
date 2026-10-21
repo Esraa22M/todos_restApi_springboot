@@ -1,6 +1,8 @@
 package com.esraa.springboot.todos.controller;
 
+import com.esraa.springboot.todos.request.AuthenticationRequest;
 import com.esraa.springboot.todos.request.RegisterRequest;
+import com.esraa.springboot.todos.response.AuthenticationResponse;
 import com.esraa.springboot.todos.service.AuthenticationService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,5 +28,11 @@ public class AuthenticationController {
     @PostMapping("/register")
     public void register(@Valid @RequestBody RegisterRequest registerRequest) throws Exception{
         authenticationService.register(registerRequest);
+    }
+    @Operation(summary = "Login a User " , description = "submit email and password to authenticate user")
+    @ResponseStatus(HttpStatus.OK)
+    @PostMapping("/login")
+    public AuthenticationResponse login(@Valid @RequestBody AuthenticationRequest authRequest){
+        return authenticationService.login(authRequest);
     }
 }
